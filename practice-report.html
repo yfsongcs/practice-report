@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基层党建新气象 - 社会实践主题调研</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-bg': '#fafaf9', // stone-50
+                        'brand-card': '#ffffff',
+                        'brand-primary': '#991b1b', // red-800
+                        'brand-secondary': '#1e3a8a', // blue-900
+                        'brand-text-main': '#292524', // stone-800
+                        'brand-text-muted': '#57534e', // stone-600
+                    },
+                    fontFamily: {
+                        sans: ['system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Base styles and utility classes */
+        body {
+            background-color: #fafaf9;
+            color: #292524;
+            overflow-x: hidden;
+        }
+        
+        /* Interactive transitions */
+        .fade-in {
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-container {
+            display: none;
+        }
+        .section-container.active {
+            display: block;
+        }
+
+        /* Chart Container Styling */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 380px;
+            }
+        }
+
+        /* Custom Scrollbar for inner content */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a8a29e; }
+    </style>
+</head>
+<body class="flex flex-col md:flex-row min-h-screen">
+
+    <nav class="w-full md:w-64 bg-white border-r border-stone-200 flex flex-col shrink-0 sticky top-0 md:h-screen z-10 shadow-sm md:shadow-none">
+        <div class="p-6 border-b border-stone-200">
+            <h1 class="text-xl font-bold text-brand-primary leading-tight flex items-center">
+                <span class="mr-2 text-2xl">传青声·习党风
+            </h1>
+            <p class="text-xs text-brand-text-muted mt-2">北京交通大学<br>“研习足迹”社会实践调研</p>
+        </div>
+        <div class="flex-1 overflow-y-auto py-4 flex flex-row md:flex-col gap-1 px-3 overflow-x-auto md:overflow-x-visible">
+            <button onclick="navTo('overview')" id="nav-overview" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors bg-stone-100 text-brand-primary border-l-4 border-brand-primary whitespace-nowrap md:whitespace-normal">
+                <span class="mr-2">调研概览
+            </button>
+            <button onclick="navTo('sites')" id="nav-sites" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors text-brand-text-muted hover:bg-stone-50 border-l-4 border-transparent whitespace-nowrap md:whitespace-normal">
+                <span class="mr-2">调研阵地
+            </button>
+            <button onclick="navTo('findings')" id="nav-findings" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors text-brand-text-muted hover:bg-stone-50 border-l-4 border-transparent whitespace-nowrap md:whitespace-normal">
+                <span class="mr-2">主要发现
+            </button>
+            <button onclick="navTo('results')" id="nav-results" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors text-brand-text-muted hover:bg-stone-50 border-l-4 border-transparent whitespace-nowrap md:whitespace-normal">
+                <span class="mr-2">成果展示
+            </button>
+            <button onclick="navTo('data')" id="nav-data" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors text-brand-text-muted hover:bg-stone-50 border-l-4 border-transparent whitespace-nowrap md:whitespace-normal">
+                <span class="mr-2">数据分析
+            </button>
+            <button onclick="navTo('solutions')" id="nav-solutions" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors text-brand-text-muted hover:bg-stone-50 border-l-4 border-transparent whitespace-nowrap md:whitespace-normal">
+                <span class="mr-2">共建转化
+            </button>
+        </div>
+        <div class="p-4 border-t border-stone-200 text-xs text-brand-text-muted text-center md:text-left">
+            &copy; 2026 计算机科学与技术学院
+        </div>
+    </nav>
+
+    <main class="flex-1 overflow-y-auto p-4 md:p-10 scroll-smooth">
+        <div class="max-w-5xl mx-auto">
+
+            <section id="overview" class="section-container active fade-in">
+                <div class="mb-10 text-center bg-brand-primary py-16 px-8 rounded-2xl shadow-lg relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h1 class="text-4xl md:text-6xl font-bold mb-6 tracking-widest text-white drop-shadow-sm" style="font-family: 'STKaiti', serif;">传青声 · 习党风</h1>
+                        <p class="text-xl md:text-2xl text-white/95 font-light mb-4">北京交通大学基层党建新气象主题调研</p>
+                        <div class="w-16 h-1 bg-white/30 mx-auto mb-4 rounded"></div>
+                        <p class="text-sm text-white/80 tracking-wide">完成时间：2026年3月10日</p>
+                    </div>
+                </div>
+
+                <div class="mb-8 bg-white p-8 rounded-2xl shadow-sm border border-stone-100">
+                    <h2 class="text-2xl font-bold text-brand-text-main mb-4 border-l-4 border-brand-primary pl-3">调研背景与宏观意义</h2>
+                    <p class="text-brand-text-muted leading-loose mb-4">
+                        治国安邦，重在基层。当前我国正处于全面建设社会主义现代化国家的关键阶段，国家各项宏观战略的落地对基层治理能力提出了更高要求。伴随城市化进程的深入与社会结构的快速演变，基层治理面临着诉求多元化、管理精细化等一系列前所未有的挑战。
+                    </p>
+                    <p class="text-brand-text-muted leading-loose">
+                        本报告旨在展现当代青年学子如何走出校园象牙塔，深入社会实地，围绕“党组织的战斗堡垒作用”和“党员先锋模范作用”两大命题展开深度实证调研。通过探寻不同场景下的基层治理样本，我们期望解码基层治理的创新模式，并探索青年大学生专业技能与基层实际需求相融合的协同共建路径。
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 flex flex-col justify-center items-center text-center">
+                        <div class="text-3xl mb-2">📄</div>
+                        <div class="text-2xl font-bold text-brand-primary">179份</div>
+                        <div class="text-sm text-brand-text-muted mt-1">有效定向问卷详实回收<br>(含社区108份+校内71份)</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 flex flex-col justify-center items-center text-center">
+                        <div class="text-3xl mb-2">🎙️</div>
+                        <div class="text-2xl font-bold text-brand-primary">3万字+</div>
+                        <div class="text-sm text-brand-text-muted mt-1">一线访谈实录与沉浸走访笔记<br>记录鲜活故事</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 flex flex-col justify-center items-center text-center">
+                        <div class="text-3xl mb-2">👥</div>
+                        <div class="text-2xl font-bold text-brand-primary">40余人</div>
+                        <div class="text-sm text-brand-text-muted mt-1">跨代际深度交流<br>焦点小组全方位覆盖</div>
+                    </div>
+                </div>
+
+                <div class="bg-stone-100 rounded-2xl p-6 border border-stone-200">
+                    <h3 class="text-lg font-bold mb-4 text-brand-text-main flex items-center"><span class="mr-2">🎓</span> 实践团团队建制</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                        <div class="bg-white p-4 rounded-xl shadow-sm sm:col-span-1">
+                            <div class="font-bold text-brand-primary mb-1">指导教师</div>
+                            <div class="text-sm text-brand-text-muted">张友荟</div>
+                            <div class="font-bold text-brand-primary mb-1 mt-3">实践团长</div>
+                            <div class="text-sm text-brand-text-muted">郑德凯</div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm sm:col-span-3">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 h-full">
+                                <div>
+                                    <div class="font-bold text-brand-primary mb-1">理论宣讲组</div>
+                                    <div class="text-sm text-brand-text-muted">宋雅风、井博冉</div>
+                                    <div class="text-xs text-stone-400 mt-2">负责理论框架搭建与宣讲稿件的深度撰写。</div>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-brand-primary mb-1">实践调研组</div>
+                                    <div class="text-sm text-brand-text-muted">郑德凯、伍熙畅</div>
+                                    <div class="text-xs text-stone-400 mt-2">负责实地踏勘、问卷发放与焦点小组访谈统筹。</div>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-brand-primary mb-1">运营宣传组</div>
+                                    <div class="text-sm text-brand-text-muted">黄惠、吕欣桐</div>
+                                    <div class="text-xs text-stone-400 mt-2">负责新媒体矩阵的搭建、视频剪辑与对外联络宣传。</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sites" class="section-container">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-brand-text-main mb-4">调研阵地：场景对比</h2>
+                    <p class="text-lg text-brand-text-muted leading-relaxed">
+                        为确保调研结论的严谨性与全面性，本次社会实践精心选取了旧鼓楼社区与天安门电话局作为两大实地调研样本。点击下方卡片，深入对比探索“市井胡同”的微观治理智慧与“红墙前线”的宏观保障力量。
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div onclick="toggleSite('gulou')" class="cursor-pointer bg-white border-2 border-transparent hover:border-brand-primary rounded-2xl p-6 shadow-sm transition-all relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-4 text-4xl opacity-10 group-hover:opacity-20 transition-opacity">🏘️</div>
+                        <h3 class="text-xl font-bold text-brand-text-main mb-2">旧鼓楼社区</h3>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-md">温情微治</span>
+                            <span class="px-2 py-1 bg-stone-100 text-stone-700 text-xs rounded-md">市井胡同</span>
+                            <span class="px-2 py-1 bg-green-50 text-green-700 text-xs rounded-md">网格党建</span>
+                        </div>
+                        <p class="text-sm text-brand-text-muted leading-relaxed">紧邻首都重点政务区与北京中轴线。这里人口密度极大、老龄化结构显著，呈现出“人少事多、诉求复杂”的典型老城区基层工作形态。</p>
+                        <div class="mt-4 text-brand-primary text-sm font-medium flex items-center">点击查看深度解析 <span class="ml-1 transition-transform group-hover:translate-x-1">&rarr;</span></div>
+                    </div>
+
+                    <div onclick="toggleSite('tiananmen')" class="cursor-pointer bg-white border-2 border-transparent hover:border-brand-primary rounded-2xl p-6 shadow-sm transition-all relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-4 text-4xl opacity-10 group-hover:opacity-20 transition-opacity">📡</div>
+                        <h3 class="text-xl font-bold text-brand-text-main mb-2">天安门电话局</h3>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 bg-red-50 text-red-700 text-xs rounded-md">严密重保</span>
+                            <span class="px-2 py-1 bg-stone-100 text-stone-700 text-xs rounded-md">红墙铁军</span>
+                            <span class="px-2 py-1 bg-purple-50 text-purple-700 text-xs rounded-md">零失误</span>
+                        </div>
+                        <p class="text-sm text-brand-text-muted leading-relaxed">承载着为人民大会堂等国家重要机构提供日常通信保障的重大责任，是历次国家级重大活动绝对通信安全的守护者。</p>
+                        <div class="mt-4 text-brand-primary text-sm font-medium flex items-center">点击查看深度解析 <span class="ml-1 transition-transform group-hover:translate-x-1">&rarr;</span></div>
+                    </div>
+                </div>
+
+                <div id="detail-gulou" class="site-detail bg-white rounded-2xl p-6 md:p-8 border border-stone-200 hidden fade-in shadow-sm">
+                    <h4 class="text-2xl font-bold text-brand-primary mb-6 flex items-center border-b pb-4">
+                        <span class="mr-3 text-3xl">👥</span> 旧鼓楼社区：凝聚群众力量的网格化治理突围
+                    </h4>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <h5 class="font-bold text-stone-800 mb-2">现实环境与治理挑战</h5>
+                            <p class="text-brand-text-muted leading-loose">
+                                旧鼓楼社区是一个充满历史底蕴但基础设施相对陈旧的典型老城区社区。目前常住居民达两千余人，然而基层的社区工作者仅有十六名左右。面对狭窄交错的胡同院落、庞大的老年人群体以及居民日益多元化的生活诉求，社区面临着极大的双重治理压力。
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <h5 class="font-bold text-stone-800 mb-2">组织破局：支部建在网格上</h5>
+                            <p class="text-brand-text-muted leading-loose">
+                                面对人手短缺的困境，破局的关键机制在于精细化的组织下沉。社区党委通过科学规划，将辖区划分为六大网格，并在此基础上精准对应成立了五个党支部。他们充分挖掘并发挥退休老党员的余热，让这些熟悉街坊邻居的老同志成为日常巡逻、安全排查和矛盾调解的中坚力量。
+                            </p>
+                        </div>
+
+                        <div class="bg-stone-50 p-6 rounded-xl border border-stone-100">
+                            <h5 class="font-bold text-brand-primary mb-3">先锋力量与显著治理效能</h5>
+                            <p class="text-stone-700 leading-relaxed mb-4">
+                                社区创新设立了“九哥说事儿”群众调解室，这不仅是党员带头冲锋的阵地，更是感召普通群众参与治理的桥梁。在榜样力量的带动下，社区成功将单向管理转变为多元共治的新风尚。
+                            </p>
+                            <ul class="space-y-3 text-stone-600 list-disc list-inside">
+                                <li><strong>志愿矩阵化：</strong> 成功孵化并运作多达 18 支不同职能的志愿服务团队，形成合力。</li>
+                                <li><strong>服务跨界融合：</strong> 积极对接外部资源，引入了西城区首批医保服务驿站，极大方便了老年居民。</li>
+                                <li><strong>历史文化传承：</strong> 成立“中轴π”志愿护卫队，常态化开展文物周边巡查与历史文化普及工作。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="detail-tiananmen" class="site-detail bg-white rounded-2xl p-6 md:p-8 border border-stone-200 hidden fade-in shadow-sm">
+                    <h4 class="text-2xl font-bold text-brand-primary mb-6 flex items-center border-b pb-4">
+                        <span class="mr-3 text-3xl">🛡️</span> 天安门电话局：高压保障下的红墙通信铁军
+                    </h4>
+
+                    <div class="space-y-6">
+                        <div>
+                            <h5 class="font-bold text-stone-800 mb-2">特殊的使命定位</h5>
+                            <p class="text-brand-text-muted leading-loose">
+                                天安门电话局的前身为1959年成立的天安门专线班，具有光荣的历史传统。作为唯一承担天安门地区通信服务的运营商机构，其肩负着极高的政治任务。无论在日常运维还是国家重大活动期间，这里对通信保障的要求始终是绝对的“零差错、零故障、零失误”。
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <h5 class="font-bold text-stone-800 mb-2">机制破局：严丝合缝的工作法</h5>
+                            <p class="text-brand-text-muted leading-loose">
+                                在巨大的保障压力下，电话局总结出了一套严密的“314工作法”（即把控3条主线、锚定1个根本目标、运用4种战术手段）。在面临重大保障任务进行全员动员时，这套机制能够迅速将所有人员编织成一张严密无缝的应急网络，确保从指令下达到现场排障的完美闭环。
+                            </p>
+                        </div>
+
+                        <div class="bg-stone-50 p-6 rounded-xl border border-stone-100">
+                            <h5 class="font-bold text-brand-primary mb-3">薪火相传的红色通信底色</h5>
+                            <p class="text-stone-700 leading-relaxed mb-4">
+                                在这里，红墙铁军的红色基因在三代通信人中实现了完美的薪火相传。从最初的摇把子磁石电话到如今先进的5G通信方舱，技术在不断迭代，但那份“背对天安门，面向纪念堂”的默默奉献精神却始终如一。
+                            </p>
+                            <ul class="space-y-3 text-stone-600 list-disc list-inside">
+                                <li><strong>政治责任优先：</strong> 始终坚持主责主业，确保关键外事专线的全天候无死角保障。</li>
+                                <li><strong>深厚的党员浓度：</strong> 党员在员工中占有绝对的主体比例，重大任务期间更是全员冲锋。</li>
+                                <li><strong>科技与传承并重：</strong> 老一辈带病坚守阵地，新一代青年骨干则利用现代编程技术自主开发调度程序，实现作风与技术的双重传承。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="findings" class="section-container">
+                <div class="mb-10 bg-brand-primary text-white rounded-2xl p-8 shadow-md">
+                    <h2 class="text-3xl font-bold mb-4">主要发现：基层党建的“圆周运动”模型</h2>
+                    <p class="text-lg text-white/90 leading-relaxed">
+                        在深入双场景的详尽对比调研中，实践团创新性地提炼出了基层党建的“圆周运动”理论模型：我们将基层党组织视作凝聚力量的“圆心”，将广大党员看作向外辐射服务、紧密联系群众的“半径”，而将始终不变的初心使命比作圆周率“π”。由于π是一个无限不循环的小数，它深刻象征着基层治理在坚守根本初心的基础上，需要源源不断、与时俱进的创新活力与不竭动力。
+                    </p>
+                </div>
+
+                <div class="space-y-8">
+                    <div class="bg-white rounded-2xl border border-stone-200 p-8 shadow-sm">
+                        <h3 class="text-2xl font-bold text-brand-text-main text-left mb-6 border-l-4 border-brand-secondary pl-4">
+                            一、 战斗堡垒作用（圆心）：求同存异的阵地前移
+                        </h3>
+                        <div class="space-y-6">
+                            <div class="bg-stone-50 p-5 rounded-lg border border-stone-100">
+                                <h4 class="font-bold text-brand-primary mb-2">【同】组织下沉与极限动员</h4>
+                                <p class="text-brand-text-muted leading-loose">
+                                    两个截然不同的阵地都坚持将党组织建设在最前沿的基层单元上。在胡同深处，社区不仅把支部建在网格上，更建立起纵向到底的清晰传达机制；在国家中枢，电话局则始终秉持“任务在哪里，党旗就插在哪里”的工作原则。当面对极大的人力压力或繁重棘手的任务时，两地皆充分依靠党组织的强大号召力与向心力，成功实现了人员组织与工作力量的有效倍增。
+                                </p>
+                            </div>
+                            <div class="bg-stone-50 p-5 rounded-lg border border-stone-100">
+                                <h4 class="font-bold text-brand-secondary mb-2">【异】温情微治与严密重保</h4>
+                                <p class="text-brand-text-muted leading-loose">
+                                    在具体的治理策略上，两者展现出了适应自身环境的巨大差异。社区面对的是错综复杂、异质化明显的百姓需求，因此更多地充当了“资源调度枢纽”的角色，采取温情化解邻里矛盾、精细化分配社会资源的微治理模式，通过巧妙引入外部的医疗、文化资源等方式来满足居民的期待。而电话局面对的是不容有失的国家级保障任务，则必须依靠严密制定的操作标准、无缝衔接的工作流程和内部严苛的纪律要求，进行闭环管控的严密防守。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl border border-stone-200 p-8 shadow-sm">
+                        <h3 class="text-2xl font-bold text-brand-text-main text-left mb-6 border-l-4 border-brand-secondary pl-4">
+                            二、 先锋模范作用（半径）：形式各异的使命坚守
+                        </h3>
+                        <div class="space-y-6">
+                            <p class="text-brand-text-muted leading-loose px-2">
+                                <strong>忘我奉献与薪火相传：</strong> 无论身处宏大的国家政务枢纽还是充满烟火气的市井胡同街巷，广大党员始终将国家大局和人民群众的切身利益置于首位。在社区中，高龄老党员坚持发挥光和热，以老带新，用自己的实际行动辐射并带动了非党员群众主动参与到社区的矛盾调解与志愿服务中；在电话局内，经验丰富的前辈在伤病面前依然坚守岗位，并悉心指导新入职的青年员工完成技术攻坚，实现了先锋本色与现代技术创新的完美代际传承。
+                            </p>
+                            
+                            <div class="grid md:grid-cols-2 gap-6 mt-6">
+                                <div class="bg-orange-50 p-6 rounded-xl border border-orange-100">
+                                    <div class="font-bold text-orange-800 text-lg mb-3 flex items-center">📣 挺身引领 (胡同社区)</div>
+                                    <p class="text-sm text-stone-700 leading-relaxed">
+                                        社区的党员骨干经常佩戴着红袖标穿梭于狭长的胡同院落，直面群众的家长里短和柴米油盐。他们的先锋带头作用具有极强的社会可见度，充满了人际交往的温度，是周围群众身边看得见、摸得着、信得过的榜样力量。
+                                    </p>
+                                </div>
+                                <div class="bg-blue-50 p-6 rounded-xl border border-blue-100">
+                                    <div class="font-bold text-blue-800 text-lg mb-3 flex items-center">🔒 幕后支撑 (机要重保)</div>
+                                    <p class="text-sm text-stone-700 leading-relaxed">
+                                        电话局的通信铁军常常被称为“最后撤场的人”。他们隐居在屏幕与线缆的幕后，甘当不露脸的无名英雄。以高度的政治觉悟和严密的保密意识，他们在看不见的隐形战线上，为国家构筑起坚不可摧的信息安全防线。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="results" class="section-container">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-brand-text-main mb-4">成果展示：理论发声与青春回响</h2>
+                    <p class="text-lg text-brand-text-muted leading-relaxed">
+                        实践团不仅停留在调研观察阶段，更将深度的调研成果有效转化为“理论宣讲、新媒体传播、文化创作”等多维度的实际产出，真正做到了“以实践调研深化理论认识，以青春智慧服务国之大者”。
+                    </p>
+                </div>
+
+                <div class="mb-12 bg-white p-8 rounded-2xl shadow-sm border border-stone-100">
+                    <h3 class="text-2xl font-bold mb-6 text-brand-text-main border-b pb-3">一、 理论宣讲矩阵体系</h3>
+                    <p class="text-brand-text-muted mb-6 leading-relaxed">
+                        围绕“基层党建新气象”这一宏大主题，宣讲组深入挖掘调研素材，精心打磨形成了四篇高质量的理论宣讲稿件，并配套录制了三部实地情境宣讲视频，针对不同受众群体实现了精准的分众化宣讲。
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div onclick="viewSpeech('speech-4')" class="p-5 bg-stone-50 rounded-lg border border-stone-200 cursor-pointer hover:border-brand-primary hover:shadow-md transition-all group">
+                            <h4 class="font-bold text-lg mb-2 text-brand-primary group-hover:text-red-700 flex justify-between items-center">
+                                《基层党建“新”图景》 
+                                <span class="text-sm opacity-0 group-hover:opacity-100 transition-opacity bg-brand-primary text-white px-2 py-1 rounded">阅读原文 &rarr;</span>
+                            </h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">深刻剖析在时代快速变局的大背景下，基层党建在工作理念转变、技术手段升级以及参与力量多元化三个核心维度上的创新演进过程。</p>
+                        </div>
+                        
+                        <div onclick="viewSpeech('speech-3')" class="p-5 bg-stone-50 rounded-lg border border-stone-200 cursor-pointer hover:border-brand-primary hover:shadow-md transition-all group">
+                            <h4 class="font-bold text-lg mb-2 text-brand-primary group-hover:text-red-700 flex justify-between items-center">
+                                《基层党建的“圆周运动”》 
+                                <span class="text-sm opacity-0 group-hover:opacity-100 transition-opacity bg-brand-primary text-white px-2 py-1 rounded">阅读原文 &rarr;</span>
+                            </h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">系统性地向外界阐述实践团独创的“圆心、半径、初心使命(π)”理论模型，为大众理解新时代基层治理结构提供了一个全新且生动的理论视角。</p>
+                        </div>
+                        
+                        <div onclick="viewSpeech('speech-1')" class="p-5 bg-stone-50 rounded-lg border border-stone-200 cursor-pointer hover:border-brand-primary hover:shadow-md transition-all group">
+                            <h4 class="font-bold text-lg mb-2 text-brand-primary group-hover:text-red-700 flex justify-between items-center">
+                                《星火成炬筑堡垒》 
+                                <span class="text-sm opacity-0 group-hover:opacity-100 transition-opacity bg-brand-primary text-white px-2 py-1 rounded">阅读原文 &rarr;</span>
+                            </h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">紧密结合旧鼓楼社区空间微更新与医保驿站入驻的具体案例，具象化地向听众展示基层党组织是如何克服重重困难，打通服务群众的“最后一百米”。</p>
+                        </div>
+                        
+                        <div onclick="viewSpeech('speech-2')" class="p-5 bg-stone-50 rounded-lg border border-stone-200 cursor-pointer hover:border-brand-primary hover:shadow-md transition-all group">
+                            <h4 class="font-bold text-lg mb-2 text-brand-primary group-hover:text-red-700 flex justify-between items-center">
+                                《跨越城乡的群众路线》 
+                                <span class="text-sm opacity-0 group-hover:opacity-100 transition-opacity bg-brand-primary text-white px-2 py-1 rounded">阅读原文 &rarr;</span>
+                            </h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">前瞻性地探讨如何将首都优秀的城市社区治理经验，因地制宜地平移、转化并借鉴至广阔的乡村振兴实践中，充分展现了青年学子的宏观社会视野。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-12 bg-white p-8 rounded-2xl shadow-sm border border-stone-100">
+                    <h3 class="text-2xl font-bold mb-6 text-brand-text-main border-b pb-3">二、 新媒体矩阵宣发成效</h3>
+                    <div class="flex flex-col md:flex-row gap-8 items-center">
+                        <div class="w-full md:w-1/3">
+                            <div class="bg-brand-primary text-white rounded-2xl p-8 shadow-md text-center">
+                                <div class="text-5xl font-black mb-2 tracking-tighter">10,000+</div>
+                                <div class="text-lg font-medium opacity-90">全网累计阅读量</div>
+                                <div class="mt-6 pt-6 border-t border-white/20 grid grid-cols-2 gap-4">
+                                    <div>
+                                        <div class="text-3xl font-bold">7篇</div>
+                                        <div class="text-xs opacity-80 mt-1">深度推文</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-3xl font-bold">7部</div>
+                                        <div class="text-xs opacity-80 mt-1">宣讲视频</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-2/3">
+                            <p class="text-brand-text-muted leading-loose">
+                                宣传组精准把握青年受众的信息获取习惯，成功构建了以“青声传习社”微信公众号为核心，深度联动视频号、小红书和B站等多平台的立体化传播矩阵。
+                            </p>
+                            <p class="text-brand-text-muted leading-loose mt-4">
+                                通过图文并茂的调研纪实、生动的微视频记录以及深度的理论解读文章，实践团不仅在校内引发了热烈反响，更成功将团队的理论研究成果《基层党建的“圆周运动”》提炼成文，并向上级媒体“共产党员网”正式投稿，有效拓宽了青年声音的社会辐射面。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 text-brand-text-main pl-2">三、 原创音乐创作《回响》</h3>
+                    <div class="bg-stone-800 text-stone-200 rounded-2xl p-8 md:p-12 flex flex-col lg:flex-row gap-10 items-center shadow-lg relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-8 text-9xl opacity-5">🎵</div>
+                        <div class="lg:w-1/2 z-10">
+                            <h4 class="text-3xl font-bold text-white mb-6">《回响》—— 调研心路的旋律化表达</h4>
+                            <p class="text-stone-300 leading-loose mb-4">
+                                这首歌曲是实践团成员在历经数周、深入旧鼓楼社区的胡同院落与天安门电话局的机房调研后，将满腔的感悟倾注于笔尖的原创歌词创作。
+                            </p>
+                            <p class="text-stone-300 leading-loose">
+                                歌曲采取了极具代入感的“沉浸式”叙事视角，将用脚步丈量基层的实践经历，升华为追寻信仰的心路历程。旋律与歌词交织，深情唱响了新时代青年学子“传青声、习党风”的坚定初心与时代担当。
+                            </p>
+                        </div>
+                        <div class="lg:w-1/2 w-full bg-black/40 rounded-2xl p-8 font-serif italic z-10 border border-stone-600 shadow-inner">
+                            <p class="text-lg leading-loose text-stone-100">
+                                "我走过旧鼓楼社区的砖墙，<br>
+                                斑驳的窗棂透出微光。<br>
+                                当暮色漫过褪色的信箱，<br>
+                                真理在风中轻轻摇晃。"
+                            </p>
+                            <p class="text-lg leading-loose text-stone-100 mt-6">
+                                "数据在机房里静静流淌，<br>
+                                守护着红墙之下的安康。<br>
+                                我们在这里追寻着真理的方向，<br>
+                                每块砖都刻着星火的滚烫……"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="data" class="section-container">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-brand-text-main mb-4">数据分析：供需契合的青年诉求</h2>
+                    <p class="text-lg text-brand-text-muted leading-relaxed">
+                        本模块通过专业的数据可视化手段，直观呈现了实践团对社区青少年及高校党支部成员开展的定向问卷调查结果。数据深度分析揭示了基层治理中面临的“老龄化”痛点，与青年大学生所具备的“知识技能优势”之间，存在着高度契合的互补与供需关系。
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-stone-100">
+                        <h3 class="text-xl font-bold text-brand-text-main mb-2 text-center">社区青少年对党组织的认知深度</h3>
+                        <p class="text-sm text-stone-500 text-center mb-8">数据来源：旧鼓楼社区青少年专项调研问卷</p>
+                        <div class="chart-container">
+                            <canvas id="willingnessChart"></canvas>
+                        </div>
+                        <div class="mt-6 p-4 bg-stone-50 rounded-lg text-stone-700 leading-relaxed border border-stone-100">
+                            调研数据有力证明了红色基因已在胡同少年心中深扎。高达 <strong>90%</strong> 的受访青少年明确表示对党组织的工作和历史有深入的了解，并且在开放性问题中，近六成的青少年主动将“加入中国共产党”或“成为对社会有贡献的人”确立为个人的长远志向。
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-stone-100">
+                        <h3 class="text-xl font-bold text-brand-text-main mb-2 text-center">社区青少年对高校入区活动的具体期待</h3>
+                        <p class="text-sm text-stone-500 text-center mb-8">数据来源：社区实地座谈与抽样调研反馈</p>
+                        <div class="chart-container">
+                            <canvas id="expectationChart"></canvas>
+                        </div>
+                        <div class="mt-6 p-4 bg-stone-50 rounded-lg text-stone-700 leading-relaxed border border-stone-100">
+                            在活动内容的需求上，社区青少年群体最渴望获取“中轴线历史文化保护知识”(占比30%)，其次是对“精彩大学生活分享”(26%)与“有趣的科学实验/手工实践活动”(26%)抱有浓厚兴趣。这一具体的数据剖析，为具备计算机等理工科专业背景的高校学子开展“校社共建”活动指明了清晰的靶向标。
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="solutions" class="section-container">
+                <div class="mb-10 text-center md:text-left">
+                    <h2 class="text-3xl font-bold text-brand-text-main mb-4">共建转化：校社协同与青春数字赋能</h2>
+                    <p class="text-lg text-brand-text-muted leading-relaxed">
+                        社会实践的意义在于解决实际问题。从早期的“走访观察与深度调研”迈向实质性的“赋能基层治理”，实践团充分将调研中发现的痛点与团队的计算机专业优势紧密结合，与社区党支部正式确立了“共学、共研、共行”的长期落地转化机制。
+                    </p>
+                </div>
+
+                <div class="space-y-8">
+                    <div class="bg-white rounded-2xl p-8 border-l-8 border-brand-primary shadow-sm hover:shadow-md transition-shadow">
+                        <h3 class="text-2xl font-bold text-brand-text-main mb-4 flex items-center">
+                            <span class="text-3xl mr-3">📚</span> 共学落地机制
+                        </h3>
+                        <p class="text-brand-text-muted leading-loose">
+                            推动组织学院计算机专业的青年党支部成员，深度参与到社区基层的宣讲活动、主题党日学习与读书交流会中。实践团组织学院党支部成员参与社区3月9日中央民族大学马克思主义学院宣讲活动：“构筑中华民族共有精神家园——从社区共建到家国同心”；未来计划组织“读书交流会”，让青年学生在沉浸式的倾听与交流中，深刻领悟一代代共产党人质朴的为民服务初心，从而实现了青年活跃的创新思维与基层丰富、厚重的治理经验的深度碰撞与有机融合。
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-8 border-l-8 border-brand-secondary shadow-sm hover:shadow-md transition-shadow">
+                        <h3 class="text-2xl font-bold text-brand-text-main mb-4 flex items-center">
+                            <span class="text-3xl mr-3">💻</span> 共研数智赋能
+                        </h3>
+                        <p class="text-brand-text-muted leading-loose">
+                            充分依托计算机科学与技术学科的专业硬核优势，实践团切实为基层社区开展“数智赋能”减负行动。针对社区工作者日常面临的繁杂事务和排班痛点，团队成员着手开发与优化轻量级的志愿者排班及服务报名微信小程序；同时，针对社区在新媒体宣传方面的短板，为社区工作人员量身定制了AI工具使用实操培训，教授智能视频剪辑、AIGC一键生成文案等实用技能，并协助搭建了标准化的数字化宣传模板库，显著且直接地提升了社区居委会的办公效能与对外宣传质量。
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-8 border-l-8 border-green-600 shadow-sm hover:shadow-md transition-shadow">
+                        <h3 class="text-2xl font-bold text-brand-text-main mb-4 flex items-center">
+                            <span class="text-3xl mr-3">🤝</span> 共行志愿对接
+                        </h3>
+                        <p class="text-brand-text-muted leading-loose">
+                            基于调研数据中青少年对科学活动的强烈渴望，实践团积极促成高校优质学生社团与社区特色志愿组织（如“中轴π”志愿护卫队）建立起长期的定向对接关系。团队安排具备专业知识的大学生志愿队伍，利用周末时间定期入驻社区公益小剧场，开设通俗易懂的少儿科普趣味讲座与基础的积木编程体验课，有效填补了辖区青少年周末科学文化活动的空白。此外，针对社区老龄化严重的现状，常态化开展“智慧助老”专场行动，面对面、手把手地耐心辅导老年居民使用智能手机，切实帮助他们跨越数字鸿沟，解决就医挂号、公交出行等数字生活中的实际难题。
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="speeches" class="section-container">
+                <div class="mb-10 text-center md:text-left flex justify-between items-end border-b border-stone-200 pb-4">
+                    <div>
+                        <h2 class="text-3xl font-bold text-brand-text-main mb-2">理论宣讲原文</h2>
+                        <p class="text-lg text-brand-text-muted">以实践调研深化理论认识，以青春智慧服务国之大者。</p>
+                    </div>
+                    <button onclick="navTo('results')" class="px-4 py-2 bg-stone-100 text-stone-700 rounded-lg text-sm hover:bg-stone-200 transition-colors">
+                        &larr; 返回成果展示
+                    </button>
+                </div>
+
+                <div id="speech-1" class="mb-16 bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-stone-100 scroll-mt-6">
+                    <h3 class="text-3xl font-bold text-brand-primary mb-8 text-center" style="font-family: 'STKaiti', serif;">星火成炬筑堡垒，红心相传谱新篇</h3>
+                    <div class="space-y-6 text-brand-text-muted leading-loose text-justify">
+                        <p>尊敬的旧鼓楼社区的各位支部书记们、亲爱的青少年朋友们，大家好！我们是来自北京交通大学的学生，非常荣幸能走出校园来到旧鼓楼社区。今天我们宣讲的主题，正是围绕“党组织战斗堡垒作用与党员先锋模范作用的发挥”展开的。</p>
+                        <p>习近平总书记指出：“基层党组织是贯彻落实党中央决策部署的‘最后一公里’。”在时代的画卷中，如果说国家的发展是波澜壮阔的长河，那么基层的党建就是汇聚成河的点点星火。今天，我就想和大家分享我们在这片热土上看到的“星火”与“堡垒”。</p>
+                        <h4 class="font-bold text-brand-text-main mt-8 text-xl border-l-4 border-brand-primary pl-3">一、筑牢战斗堡垒：打通服务群众的“最后一公里”</h4>
+                        <p>习总书记在《习近平著作选读》中强调，社会治理的重心必须落实到社区，社区党组织要成为领导基层治理的坚强战斗堡垒。大家或许会问，“战斗堡垒”究竟是什么模样？在咱们旧鼓楼社区，党组织正是一座“搬不走、攻不破”的坚实堡垒。我们可以通过“精细”与“协同”这两个关键词，来看看这份亮眼的治理答卷。</p>
+                        <p><strong>第一个关键词是“精细”。</strong>面对老城更新难题，社区党委没有生搬硬套，而是下足了的“绣花功夫”：在党组织统筹下，旧鼓楼大街188号实施了降层改造与“恢复性修建”，这不仅恢复了青砖黛瓦的古朴风貌，更在寸土寸金的胡同里，硬生生为街坊们“挤”出了120平方米的公益小剧场和阅读空间。这份精细，是把空间还给居民的匠心。如今，老街坊们能在楼顶的“空中花园”远眺钟鼓楼，在阅读空间享受家门口的墨香。党组织将工作做到了群众的心坎上、屋脊间，让古都文脉与现代生活精细地缝合在一起。</p>
+                        <p><strong>第二个关键词是“协同”。</strong>大家都熟悉圆周率“π”，它是一个无限不循环的数字。咱们社区党委正是以这种无穷无限、生生不息的精神，打造了“中轴π志愿服务队”。通过党建引领的强大磁场，社区将专业社工、志愿者和辖区资源像“拧绳子”一样拧在一起，实现了治理力量的“多元协同”。在这套机制下，关注双职工后顾之忧的“活力π”让嵌入式托育近在咫尺；聚焦老有所依的“银龄π”让爱心和理发等便民服务在邻里间循环。面对后马厂胡同危墙倒塌等突发状况，党组织依托“接诉即办”与多方协商，仅用一周便排除了隐患。这种协同，证明了党组织是基层治理的“主心骨”，真正实现了“人民城市人民建，人民城市为人民”。</p>
+                        <p>从老城更新的精细改造，到基层治理的多元协同，旧鼓楼社区党组织真真实实地把“党组织战斗堡垒作用”的深刻内涵，写在了鼓楼的青砖灰瓦之间。</p>
+                        <h4 class="font-bold text-brand-text-main mt-8 text-xl border-l-4 border-brand-primary pl-3">二、争做先锋模范：“党旗”在基层高高飘扬</h4>
+                        <p>党组织所筑就的堡垒之所以坚固，离不开每一块基石、也就是每一位共产党员的支撑。</p>
+                        <p>习总书记强调：“共产党员要平常时候看得出来、关键时刻站得出来、危急关头豁得出来。”在北京，就有无数党员正以实际行动践行着这份庄严承诺。</p>
+                        <p>比如，在咱们旧鼓楼社区，老党员姜济东就生动诠释了什么是“关键时刻站得出来”。在要拆除一些危及安全的违建小煤棚时，部分居民是顾虑重重的。但姜济东主动请缨，挨家挨户做思想工作。在他的带动下，36座危及安全的小煤棚被顺利拆除，实打实地换来了大伙儿亮堂安全的生活环境。</p>
+                        <p>同样，在其他社区，如朝阳区呼家楼街道的呼北社区，荣获“全国优秀共产党员”称号的社区党委书记殷金凤，面对“老年人多、困难群体多、买菜难、行路难”的老旧小区困境，她没有退缩，而是带领党员们探索出“十必访”工作法，硬是把昔日怨声载道的破旧大院，变成了居民难事有人管的和谐家园。</p>
+                        <p>以上这些、还有无数没有提到的党员们的优秀事迹都正是党员先锋模范作用在基层发挥的生动写照。他们可能没有惊天动地的壮举，但却在一次次走街串巷、一次次敲门问候中，将党的温暖送进了千家万户。</p>
+                        <p>习总书记强调：“一个党员就是一面旗帜。”在旧鼓楼，在北京、乃至全国的各个大街小巷，这面旗帜从来不是高挂在墙上的标语，而是哪里有群众的呼声，它就牢牢地插在哪里，永远飘扬在群众最需要的地方。</p>
+                        <h4 class="font-bold text-brand-text-main mt-8 text-xl border-l-4 border-brand-primary pl-3">三、激扬青春力量：新时代青年挺膺担当</h4>
+                        <p>面对党组织的坚强引领和老党员们的无私奉献，我们青年一代，尤其是今天在座的青少年朋友们，该如何接过、接好历史的接力棒？</p>
+                        <p>回望百年党史，青年始终是与党同心、与时代同行的先锋力量。从觉醒年代的振臂高呼，到建设时期的挥洒汗水，再到改革开放的锐意进取，一代代青年始终听党话、跟党走，将个人的命运与国家的命运紧紧相连。青年，历来是推动历史前进的生力军。</p>
+                        <p>习总书记寄语青年：“要做有理想、敢担当、能吃苦、肯奋斗的新时代好青年。”这不仅是对青年的嘱托，更是时代发出的召唤。作为新时代的青年，我们要从基层党组织的实干中汲取力量，不仅要读万卷书，更要行万里路。</p>
+                        <p>星火成炬，是因为有无数党员在基层默默耕耘；红心相传，是因为有新时代青年正在赓续血脉。</p>
+                        <p>在座的青少年朋友们，虽然我们年龄不同、学段不同，但在“红心相传”的征途上，我们都是同路人。让我们紧紧跟随党的步伐，秉持知行合一的志向，在旧鼓楼跨越百年的钟声里，在社区最温暖的烟火气中，共同谱写属于中国式现代化的新篇章！</p>
+                        <p>谢谢大家！</p>
+                    </div>
+                    <div class="mt-8 text-center"><button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="text-brand-primary text-sm hover:underline">↑ 返回顶部</button></div>
+                </div>
+
+                <div id="speech-2" class="mb-16 bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-stone-100 scroll-mt-6">
+                    <h3 class="text-3xl font-bold text-brand-primary mb-8 text-center" style="font-family: 'STKaiti', serif;">跨越城乡的群众路线</h3>
+                    <div class="space-y-6 text-brand-text-muted leading-loose text-justify">
+                        <p>各位党员同志，各位朋友，大家好。今天我宣讲的主题围绕基层党建在新时代焕发的新气象展开，结合我们近期的实地调研，探讨党组织的战斗堡垒作用与党员先锋模范作用如何在乡村基层生根发芽。</p>
+                        <p>回溯中国共产党的发展历程，农村党支部在革命与建设的不同阶段始终担负着不可替代的历史使命。土地革命时期，党组织将根基扎进广袤的乡村，带领贫苦农民推翻封建土地剥削制度。农业合作化运动中，设立在村屯的基层支部把分散的个体力量凝聚起来，共同探索生产发展新道路。依靠群众、扎根泥土的坚韧力量，让党在基层一线站稳了脚跟。时至今日，在全面推进乡村振兴的宏大图景下，乡村党组织依然是党在农村的执政基础，承载着带领群众走向共同富裕的重要职责。</p>
+                        <p>现实发展为我们提出了新课题。在《习近平著作选读》第二卷《走中国特色社会主义乡村振兴道路》一文中，总书记明确指出，实施乡村振兴战略的总要求中，“治理有效是基础”。然而我们在调研中深刻感受到，当前乡村治理正面临深层次挑战。正如总书记曾一针见血指出的：“村庄空心化和‘三留守’是一个问题的两个侧面。外在表现是村子空了，本质上是人一茬一茬离开农村。”随着城镇化浪潮推进，青壮年向城市转移，传统的村落熟人社会网络受到冲击。这就给基层党组织的动员能力带来了极大考验，农村决不能成为“荒芜的农村、留守的农村、记忆中的故园”。面对部分基层党支部号召力减弱、工作方法因循守旧的现实阻碍，我们迫切需要寻找激活基层党组织活力的有效方法。</p>
+                        <p>近期，我们团队在北京旧鼓楼社区开展了实地调研。这些发生在城市胡同里的鲜活实践，不仅展现了城市基层的党建新气象，也为我们寻找乡村治理的有效方法打开了思路。</p>
+                        <p>在旧鼓楼社区，仅有16名社区工作人员，却需要服务两千多名居民。面对人员短缺的治理难题，社区党组织将支部建在网格上，依托组织优势成立了18支志愿服务团队。他们依靠群众带动群众，极大提升了社区治理效能。九哥说事工作室专门负责调解停车难题和邻里纠纷。九哥本人暂未入党，但他始终以党员标准严格要求自己，用实际行动为社区化解矛盾。老党员张秀珍阿姨发挥熟人优势，主动上门做年轻党员的思想工作，成功带动年轻力量参与网格治理，培养出新的楼门院长。社区还将医保终端引入胡同，方便腿脚不好的老年群体办理业务，将政务服务延伸到了群众家门口。为了丰富居民生活，社区党组织引导喜欢养花的居民自发成立花友会，将办公楼的平台打造成满是月季和果蔬的空中花园。同时，党组织牵头组建了中轴护卫队、匠心维修队等队伍，把全心全意为人民服务的宗旨落实到增进人民福祉的具体实践中。这种来自城市胡同的治理方法，借助邻里关系，切实拉近了社区居民间的距离。</p>
+                        <p>城市基层的治理经验，对改善当前乡村治理现状具有重要的借鉴意义。乡村面临人口流失困境，留守群体之间依然保留着传统的宗族与乡邻关系。我们可以在乡村党组织建设中引入党员带动群众、群众带动群众的工作方法。村党支部应当挖掘并发挥老党员、老村干部以及乡贤群体的主导作用，让他们化身为乡村网格中的关键节点。把会议宣讲转化为田间地头的日常交流，把政策文件转化为为民办事过程中的沟通解释。面对留守老人的办事难题，乡村党组织也应借鉴把办事流程延伸到村里的做法，主动上门办理。面对繁杂的基层事务，村两委应借鉴城市社区依靠网格员和志愿者共同开展工作的模式，激发村民主动参与的积极性，确保各项工作落实到位。</p>
+                        <p>实践的脚步愈是深入，我们对书本上的理论体悟便愈发透彻。《习近平著作选读》第二卷指出，群众路线是我们党的生命线和根本工作路线。我们能从旧鼓楼社区的热心居民身上以及乡村田野上的老支书身上，看到群众路线最真实的模样。基层党建的根基，始终扎在群众主动参与的热情之中。制度设计一旦偏离了群众的实际期盼，就会在具体执行中寸步难行。特别是在乡村治理正处于转型期的当下，顺应群众期盼、依靠群众力量，才能够真正解决问题。</p>
+                        <p>面向未来，乡村的发展需要坚强的基层党组织作为保障。我们将把实地调研中总结出的工作方法，转化为推动乡村基层建设的具体实践，让党组织在各项村务中切实发挥主导作用，让党员的实际行动被群众看在眼里。只要基层党组织始终和群众站在一起、想在一起、干在一起，基层治理就能汇聚起最强大的力量。我们将带着这份从基层实践中汲取的宝贵经验与坚定信念，同广大群众一起，共同建设一个富裕、文明、充满生机的新时代乡村！</p>
+                    </div>
+                    <div class="mt-8 text-center"><button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="text-brand-primary text-sm hover:underline">↑ 返回顶部</button></div>
+                </div>
+
+                <div id="speech-3" class="mb-16 bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-stone-100 scroll-mt-6">
+                    <h3 class="text-3xl font-bold text-brand-primary mb-8 text-center" style="font-family: 'STKaiti', serif;">基层党建的“圆周运动”</h3>
+                    <div class="space-y-6 text-brand-text-muted leading-loose text-justify">
+                        <p>在数学世界里，画一个圆，圆心决定其位置，半径决定其大小，而圆周率则是贯穿始终、勾勒完整轨迹的永恒常数。近期，我们在寒假学习实践活动中，带着对“基层党建新气象”的思考，通过深入实地调研发现，基层党组织就如同稳固全局的“圆心”，党员就如同延伸丈量的“半径”，共产党人的初心使命就如同决定圆之轨迹的“圆周率”，三者相辅相成，构成了基层党建充满活力、永不停歇的“圆周运动”。</p>
+                        <h4 class="font-bold text-brand-text-main mt-8 text-xl border-l-4 border-brand-primary pl-3">以党组织为“圆心”，通过发挥战斗堡垒作用，筑强基层坚定领导核心。</h4>
+                        <p>圆心是整个圆的灵魂，圆心定在哪，圆就画在哪。在基层治理的宏大版图中，基层党组织就是那个不可动摇的“圆心”。</p>
+                        <p>习总书记深刻指出：“治国安邦重在基层，党的工作最坚实的力量支撑在基层，经济社会发展和民生最突出的矛盾和问题也在基层。”面对纷繁复杂的基层事务，如果没有一个坚强的领导核心，群众的力量就会是一盘散沙。因此，党组织这个“圆心”的作用，不仅是自上而下的政策传达，更是向四周散发强大的引力。这一点，我们在天安门电话局调研时，就能够十分强烈地感受到。他们在建党百年、历年全国两会、抗战80周年阅兵等无数次的重大保障任务中，无论是礼炮指令传送的分秒不差，还是现场画面传输的清晰稳定，都是最顶级的要求，任何一个环节都不能出丝毫差错，每个人心头肩上的压力可想而知。每每此时，党支部就像定海神针一般，统一思想、靠前指挥、细化分工、落实保障，把每一个人的心情稳定下来、自信点燃起来、力量团结起来，以党组织为“圆心”，形成了一个有力的“同心圆”，创造了几十年如一日的“零差错”奇迹。</p>
+                        <p>党组织站得越稳、引力越强，基层开展工作的底气就越足，这个凝心聚力的“同心圆”就能画得越大。这就是战斗堡垒的时代内涵：不是高高在上的堡垒，而是扎根群众、包容万物、汇聚力量的引力中心。</p>
+                        <h4 class="font-bold text-brand-text-main mt-8 text-xl border-l-4 border-brand-primary pl-3">以党员为“半径”，通过发挥先锋模范作用，画出基层团结民众的最大同心圆。</h4>
+                        <p>一个圆能否画得饱满、覆盖面有多广，全靠连接“圆心”与“圆周”的那无数根“半径”。在基层党建的生动实践中，每一名共产党员，都是一根一头连着党心、一头连着民心的“半径”。</p>
+                        <p>“一名党员就是一面旗帜”。习近平总书记曾语重心长地指出：“只要每个基层党组织和每个共产党员都有强烈的宗旨意识和责任意识，都能发挥战斗堡垒作用、先锋模范作用，我们党就会很有力量，我们国家就会很有力量，我们人民就会很有力量，党的执政基础就能坚如磐石。”在北京什刹海街道旧鼓楼社区，我们看到了这根“半径”的精准与力度。该社区创新推出了“中轴Π志愿服务队”，党员们主动向圆周延伸，让服务精准滴灌到百姓心坎上：这里有解双职工后顾之忧的“活力Π”，嵌入式托育让家长接送孩子只需步行百米；也有助老爱老的“银龄Π”，通过理发等技能培训，让爱心在邻里间温暖循环。</p>
+                        <p>“找到最大公约数，画出最大同心圆”。党员这根“半径”越坚韧、越主动向外延伸，党组织（圆心）与群众（圆周）的血肉联系就越紧密。正是千千万万根这样的半径精准发力，才真正打通了为人民服务的“最后一公里”。</p>
+                        <h4 class="font-bold text-brand-text-main mt-8 text-xl border-l-4 border-brand-primary pl-3">以初心使命为“圆周率”，通过无限不循环的为人民服务，不断开创基层党建新气象。</h4>
+                        <p>众所周知，圆周率“Π”是一个无限不循环小数。它永远在向后推演，绝不重复。这恰恰是我们此次调研感受最深、也最为震撼的基层党建“新气象”。</p>
+                        <p>马克思主义唯物辩证法告诉我们，事物的发展绝不是简单的循环往复，历史发展总是螺旋式上升、波浪式前进的。时代在变，群众的期盼在变。基层党建从来不是在原地画一个封闭停滞的圈。所谓“无限不循环”，就是指我们党始终保持自我革命的清醒，永远在路上，不僵化、不守旧，每一次对群众新期盼的回应，都是在努力计算“Π”小数点后的新一位。这个画圆的过程，在二维看是画圈，在三维看，就是波浪式前进、螺旋式上升的破浪前行！</p>
+                        <p>“Π”是一个永恒的常数，恰如中国共产党人的初心使命，坚如磐石、从未改变；同时，“Π”的数值又是无限延伸的，正如我们党为人民谋幸福的伟大征程，生生不息、永无止境……</p>
+                        <p>党组织、党员、初心使命三者共同构成了基层党建的有机整体。在新时代，我们要不断强化党组织的核心地位，充分发挥党员的先锋模范作用，始终坚守初心使命，以“圆心”凝聚力量，以“半径”延伸服务，以“圆周率”激发动力，在螺旋式上升中不断开创更具活力的基层党建新局面，书写新时代基层党建壮丽多彩的新篇章!</p>
+                    </div>
+                    <div class="mt-8 text-center"><button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="text-brand-primary text-sm hover:underline">↑ 返回顶部</button></div>
+                </div>
+
+                <div id="speech-4" class="mb-16 bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-stone-100 scroll-mt-6">
+                    <h3 class="text-3xl font-bold text-brand-primary mb-8 text-center" style="font-family: 'STKaiti', serif;">基层党建的“新”图景</h3>
+                    <div class="space-y-6 text-brand-text-muted leading-loose text-justify">
+                        <p>今天想和大家探讨基层党建面临的时代变局。</p>
+                        <p>《习近平著作选读》中明确指出，中国特色社会主义进入了新时代。这是我国新的历史方位，也为我们理解基层党组织发生的深刻变革提供了理论依据。新的历史方位意味着党面临的任务环境发生了转变，对基层治理提出了更高要求，这也是党建面临巨大变局的背景。</p>
+                        <p>我们这次实地调研，正是去探寻时代大背景下，党的战斗堡垒与党员先锋模范是怎么发挥作用的。基层是最贴近人民的地方，要对大政方针作出回应，把规划转化为大家身边的实际成果。这次调研让我们深切感受到，基层党建正在展现出新理念、新手段和新力量。</p>
+                        <p><strong>首先，是双向服务的“新理念”。</strong>走到街道社区，直观的感受是工作理念变了。过去部分工作习惯于单向指令下达，现在双向服务成为主流。在《习近平著作选读》中，总书记深刻阐述以人民为中心的思想，强调江山就是人民，人民就是江山。打江山守江山，守的是人民的心。这句话在基层有深刻的展现。</p>
+                        <p>我们在调研中特别关注外卖骑手、快递小哥等新就业群体。随着平台经济蓬勃发展，这些穿梭在城市街巷的劳动者遇到休息难、饮水难、维权难等实际困难。面对这些诉求，基层党组织在各地建立起暖心驿站。椿树街道工会服务站作为北京市西城区首个24小时服务驿站，不仅仅配备了微波炉、饮水机、医疗包等便民设施，还提供党组织主动延伸出的进一步服务。如物业企业提供配送配套设施设备；设置避风港，确保恶劣天气下仍安全有序；开展法律、就业咨询及技能培训等帮扶活动；等等。他们把党的温暖直接送到群众心坎上，真正落实了造福群众的初衷，也让党组织的战斗堡垒建在了最活跃的社会群体中。</p>
+                        <p><strong>其次，是用上了科技“新手段”。</strong>基层治理的方式同样在悄然迭代。《习近平著作选读》提到，推进现代化需要以科技作为坚实支撑。总书记关于科技强国的重要思想，为基层工作创新提供了指引。</p>
+                        <p>在天安门电话局实地调研时，我们发现他们的技术一直在不断革新。为了解决实际操作中的难题，党员温哲前辈专门创立了创新工作室，把技术研发落实到每一个具体的服务环节。一旦发现紧急情况，后台会立刻调度技术人员跟进。这种技术创新让通信保障变得更智能，也让服务群众的效率大大提高。通过这些新手段，天安门电话局焕发了新活力，也让党员的专业能力在保障首都通信的工作中得到了充分体现。</p>
+                        <p><strong>最后，是战斗堡垒中青年带来的“新力量”。</strong>现在的基层社区里多了很多年轻人的身影。总书记曾寄语，青年强则国家强。当代中国青年生逢其时，施展才干的舞台无比广阔，实现梦想的前景无比光明。作为大学生，这段经历让我对这句话深有体会。</p>
+                        <p>在天安门电话局，党员温哲前辈和00后青年田宇航组成了一对“老带新”搭档。田宇航主要负责使馆区的网络线路开通和维修，刚上手时他也感到胆怯，怕干不好工作。但在前辈的带领下，他逐渐坚定了信念，甘愿当好保障通信的“小螺丝钉”。在旧鼓楼社区的交流会上，我们还见到了青少年朋友，听到了他们对社区建设的想法。这些声音让我们发现，社区建设不分年龄，年轻人的见解同样应当被考虑。作为大学生，我们也努力发挥自己的能力。我们根据调研结果向社区提出建议，开展支部间的交流互鉴，把学到的知识变成解决问题的方案。老一辈的经验和年轻人的想法聚在一起，让基层党建工作变得更有生命力。</p>
+                        <p>新理念、新手段和新力量，让我们看到了基层工作的真实面貌。基层是最贴近群众的地方，各种问题和矛盾也最多，直面这些挑战需要强大的内在动力。《习近平著作选读》阐释了党的自我革命精神和斗争精神。总书记指出，我们党之所以历经百年而风华正茂、饱经磨难而生生不息，就是凭着一股革命加拼命的强大精神。在基层治理的复杂局面中，化解突发情况、上手关键的岗位、服务新就业群体，都需要敢于碰硬的实干精神。时代出卷我们答卷。基层党建没有一劳永逸的终点，唯有在解决具体问题中不断探索，才能在新征程上发挥带头作用。作为新时代的青年学子，应当把个人理想融入党和国家事业之中。用脚步丈量祖国大地，用眼睛发现中国精神，用耳朵倾听人民呼声，用内心感应时代脉搏，在基层这片广阔的天地中，书写无愧于时代的青春篇章。</p>
+                    </div>
+                    <div class="mt-8 text-center"><button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="text-brand-primary text-sm hover:underline">↑ 返回顶部</button></div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        // Navigation Logic
+        function navTo(sectionId) {
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-stone-100', 'text-brand-primary', 'border-brand-primary', 'font-bold');
+                btn.classList.add('text-brand-text-muted', 'border-transparent');
+            });
+            const activeBtn = document.getElementById('nav-' + sectionId);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-stone-100', 'text-brand-primary', 'border-brand-primary', 'font-bold');
+                activeBtn.classList.remove('text-brand-text-muted', 'border-transparent');
+            }
+
+            document.querySelectorAll('.section-container').forEach(sec => {
+                sec.classList.remove('active', 'fade-in');
+            });
+            const activeSec = document.getElementById(sectionId);
+            activeSec.classList.add('active');
+            
+            setTimeout(() => {
+                activeSec.classList.add('fade-in');
+                // 如果是从“阅读原文”返回成果展示，顺便滚到顶部
+                if(sectionId === 'results') {
+                     window.scrollTo({top: 0, behavior: 'smooth'});
+                }
+            }, 10);
+
+            if (sectionId === 'data' && !chartsInitialized) {
+                initCharts();
+            }
+        }
+
+        // Sites Interaction Logic
+        function toggleSite(site) {
+            document.querySelectorAll('.site-detail').forEach(el => el.classList.add('hidden'));
+            const detailEl = document.getElementById('detail-' + site);
+            detailEl.classList.remove('hidden');
+            detailEl.classList.remove('fade-in');
+            void detailEl.offsetWidth; 
+            detailEl.classList.add('fade-in');
+        }
+
+        // Accordion Logic
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Chart.js Implementation
+        let chartsInitialized = false;
+
+        function initCharts() {
+            Chart.defaults.font.family = "'system-ui', 'Segoe UI', 'sans-serif'";
+            Chart.defaults.color = '#57534e';
+
+            // Chart 1: Knowledge/Willingness (Doughnut)
+            const ctxWilling = document.getElementById('willingnessChart').getContext('2d');
+            new Chart(ctxWilling, {
+                type: 'doughnut',
+                data: {
+                    labels: ['对党组织有深入了解', '了解较少或基本不了解'],
+                    datasets: [{
+                        data: [90, 10], // Based on report
+                        backgroundColor: [
+                            '#991b1b', // brand-primary
+                            '#e7e5e4'  // stone-200
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { padding: 20, usePointStyle: true, font: { size: 14 } }
+                        },
+                        tooltip: {
+                            bodyFont: { size: 14 },
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Chart 2: Expectations (Bar)
+            const ctxExpect = document.getElementById('expectationChart').getContext('2d');
+            new Chart(ctxExpect, {
+                type: 'bar',
+                data: {
+                    labels: ['中轴线历史保护', '大学生活分享', '趣味科学/手工', '其他期待'],
+                    datasets: [{
+                        label: '期望比例 (%)',
+                        data: [30, 26, 26, 18], // Data from original report
+                        backgroundColor: '#1e3a8a', // brand-secondary
+                        borderRadius: 6,
+                        barPercentage: 0.5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 40,
+                            grid: { color: '#f5f5f4', drawBorder: false },
+                            ticks: { font: { size: 13 } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { size: 13 } }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            bodyFont: { size: 14 },
+                            callbacks: {
+                                label: function(context) {
+                                    return ' 期待度: ' + context.parsed.y + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            chartsInitialized = true;
+        }
+
+        // Function to handle clicking on a speech card
+        function viewSpeech(speechId) {
+            // 隐藏其他版块，显示 Speeches 版块
+            document.querySelectorAll('.section-container').forEach(sec => {
+                sec.classList.remove('active', 'fade-in');
+            });
+            
+            // 取消左侧导航栏的高亮
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-stone-100', 'text-brand-primary', 'border-brand-primary', 'font-bold');
+                btn.classList.add('text-brand-text-muted', 'border-transparent');
+            });
+
+            const activeSec = document.getElementById('speeches');
+            activeSec.classList.add('active');
+            
+            // 延时添加动画并滚动，确保 DOM 已渲染
+            setTimeout(() => {
+                activeSec.classList.add('fade-in');
+                const targetElement = document.getElementById(speechId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start' 
+                    });
+                }
+            }, 50); 
+        }
+    </script>
+</body>
+</html>
